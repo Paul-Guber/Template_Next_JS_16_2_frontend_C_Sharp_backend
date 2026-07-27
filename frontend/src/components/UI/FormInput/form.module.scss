@@ -1,0 +1,42 @@
+ @use '../../../style/variables/_vars' as *;
+.required{
+	color: red;
+}
+ 
+.input {
+	 &.error{
+	border: 1px solid $danger-color;
+}
+	display: block;
+	border: 1px solid rgba(100, 100, 111, 0.4);
+	width: 100%;
+	border-radius: 10px;
+	line-height: 30px;
+	font-size: 12px;
+	font-weight: 600;
+	color: $primary-color;
+	padding: 0 10px;
+	&::placeholder {
+		font-size: 16px;
+		color: rgba(100, 100, 111, 0.7);
+		font-weight: 400;
+	}
+	&__inner {
+		display: block;
+		position: relative;
+		padding: 15px 0;
+ 
+	}
+	&__title {
+		margin-bottom: 10px;
+		font-size: 18px;
+	}
+	&__errors {
+		position: absolute;
+		top: 15%;
+		right: 10px;
+		font-size: 16px;
+		color: $error-color;
+		font-weight: 600;
+	}
+}

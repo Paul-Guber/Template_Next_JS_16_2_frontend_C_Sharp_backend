@@ -1,0 +1,12 @@
+@use '@/vars' as *;
+.input{
+	border: 1px solid $border-color;
+	outline-style: unset;
+	padding: 8px;
+	border-radius: 5px;
+	margin-bottom: 40px;
+	display: block;
+	min-width: 100px;
+	max-width: 300px;
+	width: 100%;
+}

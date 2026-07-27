@@ -1,0 +1,99 @@
+@use '@/vars' as *;
+.view-data{
+display: grid;  
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-bottom: 10px;
+&--margin{
+	margin-bottom: 30px;
+}
+}
+ 
+.flex-table {
+  display: flex;
+  flex-direction: column; /* Сначала выстраиваем строки вертикально */
+  width: 100%;
+  border: 1px solid #86bc25;
+  border-radius: 4px;
+  overflow: hidden; /* Чтобы не было лишней прокрутки */
+	margin-bottom: 30px;
+}
+
+.flex-table-header {
+  display: flex;
+  flex-direction: row; /* Строки заголовка горизонтально */
+  background-color: #26890d;
+	color: #fff;
+	font-family: 'Roboto, sans-serif';
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.flex-cell {
+	position: relative;
+  flex: 1; /* По умолчанию ячейка сжимается, чтобы занять равное пространство */
+  padding: 10px 3px;
+  border: 1px solid #86bc25;
+  text-align: center;
+	 	display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+	&::before {
+  content: "";
+  display: block;
+  width: 100%; /* Заставляем ячейку растягиваться по ширине на всю доступную область */
+}
+}
+.flex-table__inner{
+	position: relative;
+}
+.flex-table-row {
+	position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+ .svg{
+	width: 30px;
+	height: 30px;
+	max-width: unset;
+	path{
+		fill: #000;
+transition: fill , 0.4s ease-in;
+	}
+	&:hover{
+		path{
+			transition: fill , 0.4s ease-in;
+			
+			fill: $primary-color;
+		}
+	}
+ }
+
+.container{
+	margin-bottom: 50px;
+	padding-bottom: 50px;
+}
+.btn{
+	position: absolute;
+	top: 50%; 
+	transform: translateY(-50%);
+	&--left{
+		left: 3px;
+	}
+	&--right{
+		right: 3px;
+	}
+	 
+	 
+
+}
+@media (max-width: 600px) {
+  .flex-table-header .flex-cell {
+    flex: 1;
+    width: auto; /* Позволяем ячейке автоматически подстраиваться под контент */
+  }
+}
+
+ 

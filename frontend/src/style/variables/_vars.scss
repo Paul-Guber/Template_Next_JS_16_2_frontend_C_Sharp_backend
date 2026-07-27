@@ -1,0 +1,80 @@
+/* Vars:
+  ========================================================================== */
+
+// Font
+$main-font: 'Roboto', sans-serif;
+
+// Size
+$mainFontColor: #101010;
+$mainFontSize: 18px;
+$mainFontWeight: 400;
+$mainLineHeight: 1.4;
+
+$desktopWidth: 1280px;
+$smDesktopWidth: 1024px;
+$tableWidth: 768px;
+$smTableWidth: 640px;
+$phoneWidth: 480px;
+$smPhoneWidth: 320px;
+$box-shadow-navBar: 0 15px 15px rgba(0, 0, 0, 0.19);
+
+$primary-color: #24517e;
+$thirty-color: #0057b8;
+$secondary-color: rgb(204, 204, 204);
+$offLine-color-chat: #ff3333;
+$onLine-color-chat: #18c139;
+$border-color: rgba(100, 100, 111, 0.4);
+$border-radius: 15px;
+$error-color: #ff3333;
+$popUp-bg: rgb(221, 218, 218);
+$background-image: radial-gradient(#3575b4, #142e4b);
+$box-shadow: 0 5px 15px rgba(0, 0, 0, 0.19);
+$background-select: rgba(204, 204, 204, 0.2);
+$rating-color: #fece3c;
+// Main color
+$default-color: #ffffff;
+$success-color: #26de81;
+$danger-color: #fc5c65;
+$warning-color: #fed330;
+$light-color: #999999;
+$purple-color: #8854d0;
+$white-color: #FFF;
+// notification
+$notification-bg: $primary-color; 
+$notification-text-color: $white-color;
+
+// Neutral Color
+$neutral-primary: #303133;
+$neutral-regular: #606266;
+$neutral-secondary: #909399;
+$neutral-placeholder: #c0c4cc;
+
+// Border Color
+$border-base: #dcdfe6;
+$border-light: #e4e7ed;
+$border-lighter: #ebeef5;
+$border-lightex: #f2f6fc;
+
+// padding
+$padding-children: 20px;
+
+// svg close
+$svg-color-close: #000;
+$svg-hover-color-close: $primary-color;
+// line-height input
+$line-height-input: 40px;
+// Number phone background color
+$number-call: #f1f0f0;
+// scroll textarea
+$scroll-text-area-active: $primary-color;
+$scroll-text-area: rgba(100, 100, 111, 0.4);
+// Чат, сообщения
+$bg-chat-message-sender: rgba(36, 81, 126, 0.1);
+$bg-chat-message-recipient: rgba(0, 128, 0, 0.1);
+$text-color-message: #000;
+// сообщения в админ панели
+$margin-top-admin-message: 100px;
+ 
+// Left Side Bar
+$left-side-bar-width: 300px;
+$padding-left-side-bar: 100px;

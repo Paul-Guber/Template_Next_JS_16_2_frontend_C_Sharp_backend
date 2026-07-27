@@ -1,0 +1,53 @@
+@use '@/vars' as *;
+.content {
+	margin-bottom: 70px;
+}
+.h2 {
+	position: relative;
+	color: #3c4242;
+	font-family: $main-font;
+	font-size: 34px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 33.5px; /* 98.529% */
+	letter-spacing: 0.68px;
+	display: flex;
+	margin-bottom: 10px;
+	&::before {
+		content: '';
+
+		width: 6px;
+		height: 30px;
+		border-radius: 10px;
+		background: $primary-color;
+		margin-right: 20px;
+	}
+}
+.paragraph {
+	color: rgba(102, 102, 102, 0.8);
+	font-family: $main-font;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	&:not(:last-child) {
+		margin-top: 10px;
+	}
+}
+@media (max-width: 500px) {
+	.h2 {
+		font-size: 28px;
+	}
+}
+@media (max-width: 460px) {
+	.h2 {
+		font-size: 20px;
+		margin-bottom: 30px;
+	}
+}
+@media (max-width: 360px) {
+	.h2 {
+		font-size: 18px;
+		margin-bottom: 30px;
+	}
+}

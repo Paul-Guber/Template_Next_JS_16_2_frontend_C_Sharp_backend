@@ -1,0 +1,60 @@
+@use '../../style/variables/_vars.scss' as *;
+.flex{
+	position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.pagination{	 
+	display: inline-flex;
+	gap: 30px;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #d2d2d2;
+	border-radius: 30px;
+  box-shadow: 0 3.1px 7px #00000021;
+}
+.input{
+	width: 40px;
+  display: inline-block;
+  border: 1px solid #d2d2d2;
+  padding: 5px;
+  margin:0 10px;   
+}
+.link{	
+  transition: background-color , 0.4s ease-in;
+  padding: 10px;
+	&--left{
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+	border-right: 1px solid #d2d2d2;
+	} 
+	&--right{
+	border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
+	border-left: 1px solid #d2d2d2;
+	}
+	&:hover{
+		background-color: $primary-color;
+		transition: background-color , 0.4s ease-in, fill .5s ease-out;
+		
+		.svg{
+			path{
+				fill: #fff;
+				transition: fill, .5s ease-out;
+			}
+		}
+	}
+}
+.svg{
+	width: 30px;
+	height: 30px;
+	 path{			 
+				transition: fill, .5s ease-out;
+			}
+	 
+}

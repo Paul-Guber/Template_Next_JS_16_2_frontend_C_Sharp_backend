@@ -1,0 +1,21 @@
+@use '../variables/vars' as *;
+body {
+	font-family: $main-font;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+.my-form {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.flex {
+	display: flex;
+}
+.flex-sb {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

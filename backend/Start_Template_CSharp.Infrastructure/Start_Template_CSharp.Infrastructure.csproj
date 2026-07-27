@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+      <ProjectReference Include="..\Start_Template_CSharp.Application\Start_Template_CSharp.Application.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Remove="Microsoft.Extensions.DependencyInjection" />
+      <PackageReference Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+@use '@/vars' as *;
+@use '@/mixins/_btn' as *;
+.btn{
+@include button($background-btn:$primary-color,$background-color-hover:#fff,$hover-btn-text-color: $primary-color,$border-color:$primary-color,$border:true,$font-size-btn:12px );
+&--gray{
+@include button($background-btn:#808080,$background-color-hover:#fff,$hover-btn-text-color: #000,$border-color:#808080,$border:true,$font-size-btn:12px);
+} 
+}
