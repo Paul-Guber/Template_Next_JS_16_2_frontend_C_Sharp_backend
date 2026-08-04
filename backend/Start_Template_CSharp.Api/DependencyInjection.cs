@@ -1,8 +1,8 @@
 ﻿using DotNetEnv;
 using DotNetEnv.Configuration;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using Serilog;
 using Start_Template_CSharp.Api.EndPoints.Extensions;
 using Start_Template_CSharp.Application;
 using Start_Template_CSharp.Core;
@@ -14,8 +14,11 @@ namespace Start_Template_CSharp.Api;
 
 public static class DependencyInjection
 {
-    public static WebApplicationBuilder AddMyBuilder(this WebApplicationBuilder builder   )
+    public static void AddMyBuilder(this WebApplicationBuilder builder)
     {
+        // Подключаем логирование SeriaLog
+        builder.AddSeriaLogDi();
+        
         // Подключаем файл .env в конфигурацию,
         // Чтобы прочитать значение в любом месте нужно использовать:
         // System.Environment.GetEnvironmentVariable("IP"); - Где IP это ключ в файле .env
@@ -31,19 +34,20 @@ public static class DependencyInjection
         builder.Services.AddOpenApi();
         
         builder.Services.AddMyEndPoints(typeof(Program).Assembly);
-        
-        return builder;
+    }
+
+    private static void AddSeriaLogDi(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSerilog((services, lc) => lc
+            .ReadFrom.Configuration(builder.Configuration)
+            .ReadFrom.Services(services));
+         
     }
     
     private static void AddApiDi(this IServiceCollection services, IConfiguration configuration)
     {
-            // Ищем ключ "CONNECTION_DB" из файла .env 
-        string connectionString = Environment.GetEnvironmentVariable("CONNECTION_DB") ?? "";
-        
         // Региструем службу для подключения к бд
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(@connectionString, b
-                => b.MigrationsAssembly("Start_Template_CSharp.Infrastructure")));
+        services.AddDbContext<ApplicationDbContext>();
         
        // Подключаем DI из других слоёв приложения.
         services
@@ -72,6 +76,25 @@ public static class DependencyInjection
         //app.MapOpenApi();
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseSerilogRequestLogging(options =>
+        {
+            options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+            {
+                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                diagnosticContext.Set("UserAgent", httpContext.Request.Headers.UserAgent.ToString());
+            };
+
+            // Exclude health check endpoints from request logs
+            options.GetLevel = (httpContext, elapsed, _) =>
+            {
+                if (httpContext.Request.Path.StartsWithSegments("/health"))
+                    return Serilog.Events.LogEventLevel.Verbose;
+
+                return elapsed > 500
+                    ? Serilog.Events.LogEventLevel.Warning
+                    : Serilog.Events.LogEventLevel.Information;
+            };
+        });
         app.UseMyEndPoints();
     }
 }

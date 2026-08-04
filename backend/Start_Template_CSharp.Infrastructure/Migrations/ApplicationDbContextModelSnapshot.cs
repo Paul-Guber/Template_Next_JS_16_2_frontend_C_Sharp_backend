@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Start_Template_CSharp.Infrastructure.Context;
 
-#nullable disable
+ 
 
 namespace Start_Template_CSharp.Infrastructure.Migrations
 {

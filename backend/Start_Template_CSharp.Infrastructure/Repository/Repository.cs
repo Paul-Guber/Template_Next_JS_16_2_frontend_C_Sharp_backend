@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Start_Template_CSharp.Core.Interfaces;
-using Start_Template_CSharp.Core.Responses;
+using Start_Template_CSharp.Application.Interfaces;
 using Start_Template_CSharp.Infrastructure.Context;
 
 namespace Start_Template_CSharp.Infrastructure.Repository;
@@ -8,56 +7,53 @@ namespace Start_Template_CSharp.Infrastructure.Repository;
 public class Repository<TEntity>(ApplicationDbContext context) : IRepository<TEntity>
     where TEntity : class
 {
-    public async Task<List<TEntity>> GetAllAsync<TKeyOrderBy>(
-       Func<TEntity, bool>?  searchQuery, Func<TEntity, TKeyOrderBy> orderBy )
-    {
-       List<TEntity> query = searchQuery is not null ?
-               await context.Set<TEntity>().AsNoTracking().AsAsyncEnumerable().Where(searchQuery).ToListAsync()
-                : await context.Set<TEntity>().AsNoTracking().ToListAsync();
-             
-           var find = await query
-                                         .OrderBy(orderBy)
-                                         .ToAsyncEnumerable().ToListAsync();  
-            return find;
-    }
+    private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
+    private readonly IQueryable<TEntity> _query = context.Set<TEntity>().AsNoTracking();
 
-    public async Task<ApiResponse<TEntity>> GetByIdAsync(Guid id)
+    public async Task<List<TEntity>> GetAllAsync() =>
+        await _query.ToListAsync();
+
+    public async Task<TEntity?> GetAsync(Func<TEntity, bool> predicate) =>
+        await _query.AsAsyncEnumerable().FirstOrDefaultAsync(predicate);
+     
+    public async Task<TEntity> CreateAsync(TEntity entity)  
     {
-        var find = await context.Set<TEntity>().FindAsync(id);
-        var message = find is null ? null : "Данные найдены";
-        var errormessage = find is null ? "Данные не найдены!" : null;
-        return ApiResponse<TEntity>.MyResponseApi(data:find, message: message);
-    }
-    public async Task<ApiResponse<TEntity>> CreateAsync(TEntity entity)
-    {
-      var create = context.Set<TEntity>().Add(entity);
+       var entityCreate = await _dbSet.AddAsync(entity);
         await context.SaveChangesAsync();
-        return ApiResponse<TEntity>.MyResponseApi(data: create.Entity, message: "Данные успешно добавлены");
+        
+        return entityCreate.Entity;
     }
     
     public async Task<TEntity> UpdateAsync(Guid id, TEntity entity)
     {
-         var resp = context.Set<TEntity>().Update(entity);
-            await context.SaveChangesAsync();
-            return resp.Entity;
-         
-    }
-
-    public async Task<ApiResponse<string>> DeleteAsync(Guid id)
-    {
-        ApiResponse<TEntity> find = await GetByIdAsync(id);
-        if (find.Data is null)
-        {
-            return ApiResponse<string>.MyResponseApi(message: "Ошибка при удалении!");  
-        } 
-        context.Set<TEntity>().Remove(find.Data);
+        var resp = _dbSet.Update(entity);
         await context.SaveChangesAsync();
-        return ApiResponse<string>.MyResponseApi(message: "Данные успешно удалены!");  
+        return resp.Entity;
     }
 
-    public async Task<ApiResponse<string>> DeleteAllAsync( )
+    public async Task<bool> DeleteAsync(Func<TEntity, bool> predicate)
     {
-        await context.Set<TEntity>().ExecuteDeleteAsync();
-        return ApiResponse<string>.MyResponseApi(data: null , message: "Данные успешно удалены!");  
+        TEntity? find = await GetAsync(predicate);
+        if (find is null) return false;
+        _dbSet.Remove(find);
+        int affectedRows = await context.SaveChangesAsync();
+        return affectedRows > 0;  
+    }
+
+    public async Task DeleteAllAsync () =>
+        await _dbSet.ExecuteDeleteAsync();
+    
+
+
+    public async Task<List<TEntity>> SearchByFilterAsync(
+        Func<IQueryable<TEntity>,IQueryable<TEntity>>? expression = null,
+        CancellationToken cancellationToken = default)
+    {
+        IQueryable<TEntity> query = _query;
+        if (expression is not null)
+        {
+            query = expression(query);   
+        }
+        return await query.ToListAsync(cancellationToken);
     }
 }

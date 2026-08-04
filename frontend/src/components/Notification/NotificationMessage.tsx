@@ -28,12 +28,13 @@ const NotificationMessage = <T,>({
 			data.message && data.message.trim() !== '' && setMessage(data.message)
 		}
 	}, [data])
+
 	useEffect(() => {
 		// Сообщение исчезнет через 6 секунд
 		const timeoutId = setTimeout(() => {
 			if (message) {
 				setMessage(undefined)
-				callBack && callBack(isCallBack)
+				callBack && callBack(true)
 			}
 		}, 6000)
 

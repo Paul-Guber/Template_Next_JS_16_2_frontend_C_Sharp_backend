@@ -52,11 +52,10 @@ export default function MyForm<T extends Record<string, string>>({
 					})
 			})
 		}
+		console.log(isSuccessResponse(response))
 
 		if (isSuccessResponse(response)) {
 			setResponseData(response)
-
-			// router.refresh()
 		}
 		options?.method === 'POST' ? reset() : ''
 	}
@@ -73,7 +72,7 @@ export default function MyForm<T extends Record<string, string>>({
 			<NotificationMessage<T>
 				data={responseData}
 				callBack={(isSuccess: boolean) => {
-					router.refresh()
+					isSuccess && router.refresh()
 				}}
 			/>
 		</>
