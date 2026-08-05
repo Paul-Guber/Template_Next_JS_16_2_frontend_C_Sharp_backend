@@ -1,0 +1,7 @@
+@use '@/vars' as *;
+$primary-size-container: 1250px !default;
+.container {
+	max-width: $primary-size-container;
+	margin: 0 auto;
+	padding: 0 10px;
+}

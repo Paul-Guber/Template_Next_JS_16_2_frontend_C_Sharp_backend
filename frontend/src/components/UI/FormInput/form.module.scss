@@ -1,12 +1,12 @@
- @use '../../../style/variables/_vars' as *;
-.required{
+@use '@/vars' as *;
+.required {
 	color: red;
 }
- 
+
 .input {
-	 &.error{
-	border: 1px solid $danger-color;
-}
+	&.error {
+		border: 1px solid $danger-color;
+	}
 	display: block;
 	border: 1px solid rgba(100, 100, 111, 0.4);
 	width: 100%;
@@ -25,7 +25,6 @@
 		display: block;
 		position: relative;
 		padding: 15px 0;
- 
 	}
 	&__title {
 		margin-bottom: 10px;

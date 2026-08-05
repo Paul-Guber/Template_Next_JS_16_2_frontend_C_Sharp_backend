@@ -1,5 +1,6 @@
 @use '@/vars' as *;
-.input{
+$border-color: #413f3f !default;
+.input {
 	border: 1px solid $border-color;
 	outline-style: unset;
 	padding: 8px;

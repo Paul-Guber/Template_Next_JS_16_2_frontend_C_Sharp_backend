@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "esnext"],
-		"baseUrl": "./",
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
@@ -23,9 +22,8 @@
 			"@/*": ["./src/*"],
 			"@/hooks/*": ["./hooks/*"],
 			"@/styles/*": ["./src/style/*"],
-			"@/vars": ["./src/style/variables/_vars.scss"],
+			"@/vars": ["./src/style/variables/vars.scss"],
 			"@/mixins/*": ["./src/style/mixins/*"],
-			"@/func": ["./src/style/functions/_functions.scss"],
 			"@publicSvg/*": ["./public/svg/*"],
 			"@publicImg/*": ["./public/img/*"],
 			"@public/*": ["./public/*"],

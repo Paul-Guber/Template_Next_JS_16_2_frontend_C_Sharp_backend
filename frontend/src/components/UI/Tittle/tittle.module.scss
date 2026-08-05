@@ -1,11 +1,13 @@
 @use '@/vars' as *;
+$primary-font-family: inherit !default;
+$primary-color: #000 !default;
 .content {
 	margin-bottom: 70px;
 }
 .h2 {
 	position: relative;
 	color: #3c4242;
-	font-family: $main-font;
+	font-family: $primary-font-family;
 	font-size: 34px;
 	font-style: normal;
 	font-weight: 600;
@@ -25,7 +27,7 @@
 }
 .paragraph {
 	color: rgba(102, 102, 102, 0.8);
-	font-family: $main-font;
+	font-family: $primary-font-family;
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 500;

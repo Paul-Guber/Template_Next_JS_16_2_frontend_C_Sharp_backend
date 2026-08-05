@@ -1,0 +1,9 @@
+@use '../variables/vars' as *;
+$primary-font-family: inherit !default;
+$primary-font-size: 14px !default;
+$font-weight-400: 400 !default;
+body {
+	font-family: $primary-font-family;
+	font-weight: $font-weight-400;
+	font-size: $primary-font-size;
+}
