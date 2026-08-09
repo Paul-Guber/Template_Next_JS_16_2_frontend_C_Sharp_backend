@@ -1,0 +1,28 @@
+﻿services:
+  sqlserver:
+    container_name: sql2022-container
+    hostname: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_USER: admin
+      MSSQL_SA_PASSWORD: 'YourStrongPassword123!'  # Замените на надёжный пароль!
+      MSSQL_PID: 'Developer'  # Или 'Standard' в зависимости от лицензии
+    ports:
+      - "1433:1433"   
+    volumes:
+      - ./data:/var/opt/mssql/data  # Папка для данных
+      - ./log:/var/opt/mssql/log    # Папка для логов
+      - ./secrets:/var/opt/mssql/secrets  # Для хранения секретов (например, сертификатов)      
+    restart: unless-stopped  
+    
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    volumes:
+      - ./seq-data:/data 
