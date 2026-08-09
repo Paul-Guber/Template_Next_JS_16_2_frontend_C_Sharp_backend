@@ -15,8 +15,9 @@ public class EmployeeEntityConfiguration : IEntityTypeConfiguration<EmployeeEnti
          builder.HasKey(x => x.Id);
          builder.Property(e => e.Id).IsRequired().HasValueGenerator<GuidValueGenerator>();
          builder.Property(e => e.Name).IsRequired().HasMaxLength(MaxNameLength) ;
+         builder.HasIndex(e=>e.Email).IsUnique();
          builder.Property(e => e.Email).IsRequired().HasMaxLength(MaxEmailLength) ;
          builder.Property(e => e.Phone).IsRequired().HasMaxLength(MaxPhoneLength) ;
-         
+
     }
 }

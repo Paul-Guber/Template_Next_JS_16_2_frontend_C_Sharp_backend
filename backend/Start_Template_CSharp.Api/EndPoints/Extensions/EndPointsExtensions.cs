@@ -19,7 +19,7 @@ public static class EndPointsExtensions
     public static IApplicationBuilder UseMyEndPoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
     {
         IEnumerable<IEndpoint> endPoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
-        
+
         IEndpointRouteBuilder builder = routeGroupBuilder is null ? app : routeGroupBuilder;
         foreach (IEndpoint endPoint in endPoints)
         {

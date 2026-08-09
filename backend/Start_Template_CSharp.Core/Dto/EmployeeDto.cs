@@ -2,6 +2,6 @@
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public sealed record EmployeeDto(
-    string Name, 
+    string Name,
   string Email ,
   string Phone);

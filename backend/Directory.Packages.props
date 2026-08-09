@@ -36,4 +36,10 @@
   <ItemGroup>
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.31.0.145097" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Meziantou.Analyzer" Version="3.0.140" /> 
+    <PackageVersion Include="AsyncFixer" Version="2.1.0" />
+  </ItemGroup>
 </Project>

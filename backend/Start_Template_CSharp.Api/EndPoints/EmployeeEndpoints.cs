@@ -12,13 +12,13 @@ namespace Start_Template_CSharp.Api.EndPoints;
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
 internal sealed class EmployeeEndpoints : IEndpoint
-{ 
-     
+{
+
     public void MapEndPointCreate(IEndpointRouteBuilder builder)
     {
         // Группа конечной точки 
-        var groupEndpoints = builder.MapGroup("/api/employee");
-        
+        RouteGroupBuilder groupEndpoints = builder.MapGroup("/api/employee");
+
         // Конечная точка: Возвращает все сущности EmployeeEntity из бд 
         groupEndpoints.MapGet("/getAll", GetAllEmployeeAsync);
         // Конечная точка: Возвращает сущность по id EmployeeEntity из бд 
@@ -40,49 +40,66 @@ internal sealed class EmployeeEndpoints : IEndpoint
         int? limit,
         IEmployeeServices employeeServices)
     {
-      var (employees, totalCount) = await employeeServices.GetAllEmployees( page ?? 1, limit ?? 2, searchQuery);
-         var data = ApiResponse<List<EmployeeEntity>>.MyResponseApi(
+      (IList<EmployeeEntity>? employees, int totalCount) = await employeeServices.GetAllEmployees( page ?? 1, limit ?? 2, searchQuery).ConfigureAwait(false);
+        var data = ApiResponse<IList<EmployeeEntity>>.MyResponseApi(
               data: employees, totalCount: totalCount, message: "success");
-        return totalCount > 0 ? TypedResults.Ok(data) 
+        return totalCount > 0 ? TypedResults.Ok(data)
                                 : TypedResults.BadRequest("Данные не найдены!");
     }
     // Функция возвращает сущность из бд по id
     private static async Task<IResult> GetEmployeeAsync(Guid id, IEmployeeServices employeeServices)
     {
-       var find = await employeeServices.GetEmployeeAsync(id);
-       return find is not null ? TypedResults.Ok(find) 
-                               : TypedResults.BadRequest("Данные не найдены!");
+       EmployeeEntity? find = await employeeServices.GetEmployeeAsync(id).ConfigureAwait(false);
+       return find is not null ? TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data:find))
+                               : TypedResults.BadRequest(ApiResponse<string>.MyResponseApi(message: "Данные не найдены!"));
     }
-    
+
     // Функция создаёт сущность в бд и возвращает её как результат
-    private static async Task<IResult> AddEmployeeAsync(EmployeeDto entity, IEmployeeServices employeeServices)
+    private static async Task<IResult> AddEmployeeAsync(EmployeeDto entity,
+        IEmployeeServices employeeServices,
+        HttpContext httpContext
+        )
     {
-       List<ResponseErrors> validateResult = await employeeServices.ValidateEmployee(entity);
-       if (validateResult.Count > 0) return Results.BadRequest(validateResult);
-        // Если при проверке входных данных ошибок нет, то создаём новую сущность в бд 
-        var create = await employeeServices.CreateEmployee(entity);
+       IList<ResponseErrors> validateResult = await employeeServices.ValidateEmployee(entity, httpContext.RequestAborted).ConfigureAwait(false);
+       if (validateResult.Count > 0)
+       {
+           return Results.BadRequest(validateResult);
+       }
+
+       // Если при проверке входных данных ошибок нет, то создаём новую сущность в бд 
+        EmployeeEntity create = await employeeServices.CreateEmployee(entity).ConfigureAwait(false);
        // Возвращаем ответ с созданной сущностью и status 200
-       return TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data: create, message: "Успешно создан!") );
+       return TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data: create, message: 
+           "Сотрудник успешно добавлен!") );
     }
-    
+
     // Функция обновляет сущность в бд и возвращает её как результат
-    private static async Task<IResult> UpdateEmployeeAsync(Guid id, EmployeeDto entity, IEmployeeServices employeeServices )
+    private static async Task<IResult> UpdateEmployeeAsync(Guid id, EmployeeDto entity, IEmployeeServices employeeServices,
+        HttpContext httpContext)
     {
         // Проверяем входные данные от пользователя на обновления полей
-        List<ResponseErrors> validateResult = await employeeServices.ValidateEmployee(entity);
-        if (validateResult.Count > 0) return Results.BadRequest(validateResult);
+        IList<ResponseErrors> validateResult = await employeeServices
+                                                            .ValidateEmployee(entity, httpContext.RequestAborted)
+                                                             .ConfigureAwait(false);
+        if (validateResult.Count > 0)
+        {
+            return Results.BadRequest(validateResult);
+        }
+
         // После успешной проверке обновляем сущность в бд
-      var update = await employeeServices.UpdateEmployee(id, entity);
-      return update is not null ? 
-              TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data: update, message: "Данные успешно обновлены!")) 
-              : TypedResults.BadRequest("Пользователь не найден!");   
+     EmployeeEntity? update = await employeeServices.UpdateEmployee(id,entity).ConfigureAwait(false);
+      return update is not null ?
+              TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data: update, message: "Данные успешно обновлены!"))
+              : TypedResults.BadRequest(ApiResponse<string>.MyResponseApi(message: "Сотрудник не найден!"));
     }
-    
+
     // Функция удаляет сущность из бд и возвращает строку как результат успешного удаления
     private static async Task<IResult> DeleteEmployeeAsync(Guid id, IEmployeeServices employeeServices) =>
-        TypedResults.Ok(ApiResponse<EmployeeEntity>.MyResponseApi(data: null, message: await employeeServices.DeleteEmployee(id)));
-     
+        TypedResults.Ok(ApiResponse<EmployeeEntity>
+            .MyResponseApi(data: null, message: await employeeServices.DeleteEmployee(id).ConfigureAwait(false)));
+
     // Функция удаляет все таблицы сущности из бд и возвращает строку как результат успешного удаления
     private static async Task<IResult> DeleteAllEmployeeAsync(IEmployeeServices employeeServices) =>
-        TypedResults.Ok(ApiResponse<string>.MyResponseApi(data:null, message: await employeeServices.DeleteAllEmployees()));
+        TypedResults.Ok(ApiResponse<string>.MyResponseApi(data:null, message:
+            await employeeServices.DeleteAllEmployees().ConfigureAwait(false)));
 }

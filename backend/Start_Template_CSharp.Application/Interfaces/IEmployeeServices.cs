@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Start_Template_CSharp.Core.Dto;
+﻿using Start_Template_CSharp.Core.Dto;
 using Start_Template_CSharp.Core.Entities;
 using Start_Template_CSharp.Core.models;
 
@@ -7,8 +6,8 @@ namespace Start_Template_CSharp.Application.Interfaces;
 
 public interface IEmployeeServices
 {
-    Task<(List<EmployeeEntity> employees, int totalCount)> GetAllEmployees(int currentPage, int pageSize, string? searchQuery);
-    Task<List<ResponseErrors>> ValidateEmployee(EmployeeDto employeeDto);
+    Task<(IList<EmployeeEntity> employees, int totalCount)> GetAllEmployees(int currentPage, int pageSize, string? searchQuery);
+    Task<IList<ResponseErrors>> ValidateEmployee(EmployeeDto employeeDto, CancellationToken  cancellation = default);
     Task<EmployeeEntity> CreateEmployee(EmployeeDto employee);
     Task<EmployeeEntity?> GetEmployeeAsync(Guid id);
     Task<string> DeleteEmployee(Guid id);

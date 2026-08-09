@@ -2,7 +2,7 @@
 
 public class ResponseErrors
 {
-    public string? PropertyName { get; set; } 
-    public string? ErrorMessage { get; set; } 
-    public string? Message { get; init; } 
+    public string? PropertyName { get; set; }
+    public string? ErrorMessage { get; set; }
+    public string? Message { get; init; }
 }

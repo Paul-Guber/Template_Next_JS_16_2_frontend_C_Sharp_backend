@@ -3,10 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable IDE0161
 namespace Start_Template_CSharp.Infrastructure.Migrations
+#pragma warning restore IDE0161
 {
     /// <inheritdoc />
+#pragma warning disable MA0048
     public partial class InitialMigration : Migration
+#pragma warning restore MA0048
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +28,12 @@ namespace Start_Template_CSharp.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Email",
+                table: "Employees",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />

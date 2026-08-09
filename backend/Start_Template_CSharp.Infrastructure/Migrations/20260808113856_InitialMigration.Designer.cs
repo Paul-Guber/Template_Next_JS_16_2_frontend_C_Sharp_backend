@@ -12,7 +12,7 @@ using Start_Template_CSharp.Infrastructure.Context;
 namespace Start_Template_CSharp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260717101821_InitialMigration")]
+    [Migration("20260808113856_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -47,6 +47,9 @@ namespace Start_Template_CSharp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });

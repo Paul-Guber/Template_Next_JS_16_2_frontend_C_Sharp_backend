@@ -1,23 +1,26 @@
 using Serilog;
 using Start_Template_CSharp.Api;
+using Start_Template_CSharp.Api.Extensions;
 
+#pragma warning disable CA1305
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
+    .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm} [{Level}] ({ThreadId}) {Message}{NewLine}{Exception}")
+#pragma warning restore CA1305
     .CreateBootstrapLogger();
 try
 {
     Log.Information("Сервер успешно запущен!");
-    
-    var builder = WebApplication.CreateBuilder(args);
 
-//Здесь мы подключаем все DI из всех слоёв, там же задаем настройки подключения к БД
+    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+    //Здесь мы подключаем все DI из всех слоёв, там же задаем настройки подключения к БД
     builder.AddMyBuilder();
 
-    var app = builder.Build();
+    WebApplication app = builder.Build();
+    // Настройка Application
+    app.AddApplicationDi( );
 
-    app.AddApplicationDi(app.Configuration);
- 
-    app.Run();
+   await app.RunAsync().ConfigureAwait(false);
 
 }
 catch (Exception ex)
@@ -27,6 +30,5 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+   await Log.CloseAndFlushAsync().ConfigureAwait(false);
 }
- 
